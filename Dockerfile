@@ -9,6 +9,7 @@ WORKDIR /app
 # Install dependencies
 COPY package.json package-lock.json* ./
 RUN npm ci
+COPY prisma ./prisma
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -18,6 +19,7 @@ COPY . .
 
 # Generate Prisma Client if schema exists
 RUN if [ -f "prisma/schema.prisma" ]; then npx prisma generate; fi
+
 
 # Next.js telemetry
 ENV NEXT_TELEMETRY_DISABLED=1
